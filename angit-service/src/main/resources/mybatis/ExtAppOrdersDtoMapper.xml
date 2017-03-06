@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.mapper.ExtAppOrdersDtoMapper">
+	<resultMap id="BaseResultMap" type="com.hy.model.AppOrdersModel">
+		<result column="ID" jdbcType="INTEGER" property="id" />
+		<result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+		<result column="APP_NAME" jdbcType="VARCHAR" property="appName" />
+		<result column="APP_MERCHANT_NO" jdbcType="VARCHAR" property="appMerchantNo" />
+		<result column="APP_MERCHANT_NAME" jdbcType="VARCHAR" property="appMerchantName" />
+		<result column="APP_ORDER_NO" jdbcType="VARCHAR" property="appOrderNo" />
+		<result column="AMOUNT" jdbcType="DECIMAL" property="amount" />
+		<result column="STATUS" jdbcType="VARCHAR" property="status" />
+		<result column="NOTIFY_URL" jdbcType="VARCHAR" property="notifyUrl" />
+		<result column="CODE_URL" jdbcType="VARCHAR" property="codeUrl" />
+		<result column="EXTENSION" jdbcType="VARCHAR" property="extension" />
+		<result column="CREATE_TIME" jdbcType="VARCHAR" property="createTime" />
+		<result column="UPATE_TIME" jdbcType="VARCHAR" property="upateTime" />
+	</resultMap>
+ 	<sql id="Base_Column_List" >
+    o.ID, o.APP_ID, o.APP_MERCHANT_NO,
+		o.APP_MERCHANT_NAME, o.APP_ORDER_NO,
+		o.AMOUNT, o.STATUS,a.APP_NAME,
+		o.NOTIFY_URL, o.CODE_URL, o.EXTENSION, o.CREATE_TIME,o.UPATE_TIME,
+		a.APP_NAME
+  	</sql>
+	<sql id="base_where" >
+	
+		hy_res.t_app_orders o left join hy_res.t_app_protocol a
+		on o.APP_ID=a.ID
+		where 1=1 
+		 <if test="appMerchantNo != null" >
+    		 and  o.APP_MERCHANT_NO= #{appMerchantNo,jdbcType=VARCHAR},
+    	 </if>
+		 <if test="appMerchantName != null" >
+    		and o.APP_MERCHANT_NAME= #{appMerchantName,jdbcType=VARCHAR},
+    	 </if>
+    	  <if test="appOrderNo != null" >
+    		and o.APP_ORDER_NO= #{appOrderNo,jdbcType=VARCHAR},
+    	 </if>
+    	  <if test="appName != null" >
+    		and a.APP_NAME= #{appName,jdbcType=VARCHAR},
+    	 </if>
+    	  <if test="startTime != null" >
+    		<![CDATA[and o.CREATE_TIME >  #{startTime,jdbcType=VARCHAR},]]>  
+    	 </if>
+    	 <if test="endTime != null" >
+    		<![CDATA[  and o.CREATE_TIME <  #{endTime,jdbcType=VARCHAR}, ]]>  
+    	 </if>
+    	
+  	</sql>
+	<select id="selectByExample" parameterType="com.hy.model.AppOrdersModel"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		<include refid="base_where" />
+		order by o.CREATE_TIME desc
+	</select>
+
+	<select id="countByExample" parameterType="com.hy.model.AppOrdersModel"
+		resultType="java.lang.Integer">
+		SELECT count(1) FROM
+		<include refid="base_where" />
+	</select>
+
+</mapper>

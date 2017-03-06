@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.mapper.AppOrdersDtoMapper" >
+  <resultMap id="BaseResultMap" type="com.hy.dto.AppOrdersDto" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="APP_ID" property="appId" jdbcType="INTEGER" />
+    <result column="APP_MERCHANT_NO" property="appMerchantNo" jdbcType="VARCHAR" />
+    <result column="APP_MERCHANT_NAME" property="appMerchantName" jdbcType="VARCHAR" />
+    <result column="APP_ORDER_NO" property="appOrderNo" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="NOTIFY_URL" property="notifyUrl" jdbcType="VARCHAR" />
+    <result column="CODE_URL" property="codeUrl" jdbcType="VARCHAR" />
+    <result column="EXTENSION" property="extension" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPATE_TIME" property="upateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, APP_MERCHANT_NO, APP_MERCHANT_NAME, APP_ORDER_NO, AMOUNT, STATUS, NOTIFY_URL, 
+    CODE_URL, EXTENSION, CREATE_TIME, UPATE_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hy.dto.AppOrdersDtoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_app_orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_app_orders
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_app_orders
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hy.dto.AppOrdersDtoExample" >
+    delete from t_app_orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hy.dto.AppOrdersDto" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_app_orders (APP_ID, APP_MERCHANT_NO, APP_MERCHANT_NAME, 
+      APP_ORDER_NO, AMOUNT, STATUS, 
+      NOTIFY_URL, CODE_URL, EXTENSION, 
+      CREATE_TIME, UPATE_TIME)
+    values (#{appId,jdbcType=INTEGER}, #{appMerchantNo,jdbcType=VARCHAR}, #{appMerchantName,jdbcType=VARCHAR}, 
+      #{appOrderNo,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, 
+      #{notifyUrl,jdbcType=VARCHAR}, #{codeUrl,jdbcType=VARCHAR}, #{extension,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{upateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hy.dto.AppOrdersDto" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_app_orders
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="appMerchantNo != null" >
+        APP_MERCHANT_NO,
+      </if>
+      <if test="appMerchantName != null" >
+        APP_MERCHANT_NAME,
+      </if>
+      <if test="appOrderNo != null" >
+        APP_ORDER_NO,
+      </if>
+      <if test="amount != null" >
+        AMOUNT,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="notifyUrl != null" >
+        NOTIFY_URL,
+      </if>
+      <if test="codeUrl != null" >
+        CODE_URL,
+      </if>
+      <if test="extension != null" >
+        EXTENSION,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="upateTime != null" >
+        UPATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="appId != null" >
+        #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="appMerchantNo != null" >
+        #{appMerchantNo,jdbcType=VARCHAR},
+      </if>
+      <if test="appMerchantName != null" >
+        #{appMerchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="appOrderNo != null" >
+        #{appOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="notifyUrl != null" >
+        #{notifyUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="codeUrl != null" >
+        #{codeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="extension != null" >
+        #{extension,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upateTime != null" >
+        #{upateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hy.dto.AppOrdersDtoExample" resultType="java.lang.Integer" >
+    select count(*) from t_app_orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_app_orders
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.appId != null" >
+        APP_ID = #{record.appId,jdbcType=INTEGER},
+      </if>
+      <if test="record.appMerchantNo != null" >
+        APP_MERCHANT_NO = #{record.appMerchantNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appMerchantName != null" >
+        APP_MERCHANT_NAME = #{record.appMerchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appOrderNo != null" >
+        APP_ORDER_NO = #{record.appOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null" >
+        AMOUNT = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.notifyUrl != null" >
+        NOTIFY_URL = #{record.notifyUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.codeUrl != null" >
+        CODE_URL = #{record.codeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.extension != null" >
+        EXTENSION = #{record.extension,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.upateTime != null" >
+        UPATE_TIME = #{record.upateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_app_orders
+    set ID = #{record.id,jdbcType=INTEGER},
+      APP_ID = #{record.appId,jdbcType=INTEGER},
+      APP_MERCHANT_NO = #{record.appMerchantNo,jdbcType=VARCHAR},
+      APP_MERCHANT_NAME = #{record.appMerchantName,jdbcType=VARCHAR},
+      APP_ORDER_NO = #{record.appOrderNo,jdbcType=VARCHAR},
+      AMOUNT = #{record.amount,jdbcType=DECIMAL},
+      STATUS = #{record.status,jdbcType=INTEGER},
+      NOTIFY_URL = #{record.notifyUrl,jdbcType=VARCHAR},
+      CODE_URL = #{record.codeUrl,jdbcType=VARCHAR},
+      EXTENSION = #{record.extension,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPATE_TIME = #{record.upateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hy.dto.AppOrdersDto" >
+    update t_app_orders
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="appMerchantNo != null" >
+        APP_MERCHANT_NO = #{appMerchantNo,jdbcType=VARCHAR},
+      </if>
+      <if test="appMerchantName != null" >
+        APP_MERCHANT_NAME = #{appMerchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="appOrderNo != null" >
+        APP_ORDER_NO = #{appOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        AMOUNT = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="notifyUrl != null" >
+        NOTIFY_URL = #{notifyUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="codeUrl != null" >
+        CODE_URL = #{codeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="extension != null" >
+        EXTENSION = #{extension,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upateTime != null" >
+        UPATE_TIME = #{upateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hy.dto.AppOrdersDto" >
+    update t_app_orders
+    set APP_ID = #{appId,jdbcType=INTEGER},
+      APP_MERCHANT_NO = #{appMerchantNo,jdbcType=VARCHAR},
+      APP_MERCHANT_NAME = #{appMerchantName,jdbcType=VARCHAR},
+      APP_ORDER_NO = #{appOrderNo,jdbcType=VARCHAR},
+      AMOUNT = #{amount,jdbcType=DECIMAL},
+      STATUS = #{status,jdbcType=INTEGER},
+      NOTIFY_URL = #{notifyUrl,jdbcType=VARCHAR},
+      CODE_URL = #{codeUrl,jdbcType=VARCHAR},
+      EXTENSION = #{extension,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPATE_TIME = #{upateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

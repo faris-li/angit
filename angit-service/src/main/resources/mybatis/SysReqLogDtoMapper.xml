@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.mapper.SysReqLogDtoMapper" >
+  <resultMap id="BaseResultMap" type="com.hy.dto.SysReqLogDto" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="REQ_LOG_TYPE" property="reqLogType" jdbcType="CHAR" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="SYS_APP_ID" property="sysAppId" jdbcType="VARCHAR" />
+    <result column="BIZ_NO" property="bizNo" jdbcType="VARCHAR" />
+    <result column="CHARSET" property="charset" jdbcType="VARCHAR" />
+    <result column="REQUEST_TIME" property="requestTime" jdbcType="TIMESTAMP" />
+    <result column="REQUEST_CONTENT" property="requestContent" jdbcType="VARCHAR" />
+    <result column="RESPONSE_CONTENT" property="responseContent" jdbcType="VARCHAR" />
+    <result column="REQUEST_CNT" property="requestCnt" jdbcType="INTEGER" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, REQ_LOG_TYPE, STATUS, SYS_APP_ID, BIZ_NO, CHARSET, REQUEST_TIME, REQUEST_CONTENT, 
+    RESPONSE_CONTENT, REQUEST_CNT, CREATE_TIME, UPDATE_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hy.dto.SysReqLogDtoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_req_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_req_log
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_req_log
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hy.dto.SysReqLogDtoExample" >
+    delete from sys_req_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hy.dto.SysReqLogDto" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_req_log (REQ_LOG_TYPE, STATUS, SYS_APP_ID, 
+      BIZ_NO, CHARSET, REQUEST_TIME, 
+      REQUEST_CONTENT, RESPONSE_CONTENT, REQUEST_CNT, 
+      CREATE_TIME, UPDATE_TIME)
+    values (#{reqLogType,jdbcType=CHAR}, #{status,jdbcType=INTEGER}, #{sysAppId,jdbcType=VARCHAR}, 
+      #{bizNo,jdbcType=VARCHAR}, #{charset,jdbcType=VARCHAR}, #{requestTime,jdbcType=TIMESTAMP}, 
+      #{requestContent,jdbcType=VARCHAR}, #{responseContent,jdbcType=VARCHAR}, #{requestCnt,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hy.dto.SysReqLogDto" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_req_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="reqLogType != null" >
+        REQ_LOG_TYPE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="sysAppId != null" >
+        SYS_APP_ID,
+      </if>
+      <if test="bizNo != null" >
+        BIZ_NO,
+      </if>
+      <if test="charset != null" >
+        CHARSET,
+      </if>
+      <if test="requestTime != null" >
+        REQUEST_TIME,
+      </if>
+      <if test="requestContent != null" >
+        REQUEST_CONTENT,
+      </if>
+      <if test="responseContent != null" >
+        RESPONSE_CONTENT,
+      </if>
+      <if test="requestCnt != null" >
+        REQUEST_CNT,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="reqLogType != null" >
+        #{reqLogType,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="sysAppId != null" >
+        #{sysAppId,jdbcType=VARCHAR},
+      </if>
+      <if test="bizNo != null" >
+        #{bizNo,jdbcType=VARCHAR},
+      </if>
+      <if test="charset != null" >
+        #{charset,jdbcType=VARCHAR},
+      </if>
+      <if test="requestTime != null" >
+        #{requestTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="requestContent != null" >
+        #{requestContent,jdbcType=VARCHAR},
+      </if>
+      <if test="responseContent != null" >
+        #{responseContent,jdbcType=VARCHAR},
+      </if>
+      <if test="requestCnt != null" >
+        #{requestCnt,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hy.dto.SysReqLogDtoExample" resultType="java.lang.Integer" >
+    select count(*) from sys_req_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_req_log
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.reqLogType != null" >
+        REQ_LOG_TYPE = #{record.reqLogType,jdbcType=CHAR},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.sysAppId != null" >
+        SYS_APP_ID = #{record.sysAppId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bizNo != null" >
+        BIZ_NO = #{record.bizNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.charset != null" >
+        CHARSET = #{record.charset,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requestTime != null" >
+        REQUEST_TIME = #{record.requestTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.requestContent != null" >
+        REQUEST_CONTENT = #{record.requestContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.responseContent != null" >
+        RESPONSE_CONTENT = #{record.responseContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requestCnt != null" >
+        REQUEST_CNT = #{record.requestCnt,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_req_log
+    set ID = #{record.id,jdbcType=INTEGER},
+      REQ_LOG_TYPE = #{record.reqLogType,jdbcType=CHAR},
+      STATUS = #{record.status,jdbcType=INTEGER},
+      SYS_APP_ID = #{record.sysAppId,jdbcType=VARCHAR},
+      BIZ_NO = #{record.bizNo,jdbcType=VARCHAR},
+      CHARSET = #{record.charset,jdbcType=VARCHAR},
+      REQUEST_TIME = #{record.requestTime,jdbcType=TIMESTAMP},
+      REQUEST_CONTENT = #{record.requestContent,jdbcType=VARCHAR},
+      RESPONSE_CONTENT = #{record.responseContent,jdbcType=VARCHAR},
+      REQUEST_CNT = #{record.requestCnt,jdbcType=INTEGER},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hy.dto.SysReqLogDto" >
+    update sys_req_log
+    <set >
+      <if test="reqLogType != null" >
+        REQ_LOG_TYPE = #{reqLogType,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="sysAppId != null" >
+        SYS_APP_ID = #{sysAppId,jdbcType=VARCHAR},
+      </if>
+      <if test="bizNo != null" >
+        BIZ_NO = #{bizNo,jdbcType=VARCHAR},
+      </if>
+      <if test="charset != null" >
+        CHARSET = #{charset,jdbcType=VARCHAR},
+      </if>
+      <if test="requestTime != null" >
+        REQUEST_TIME = #{requestTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="requestContent != null" >
+        REQUEST_CONTENT = #{requestContent,jdbcType=VARCHAR},
+      </if>
+      <if test="responseContent != null" >
+        RESPONSE_CONTENT = #{responseContent,jdbcType=VARCHAR},
+      </if>
+      <if test="requestCnt != null" >
+        REQUEST_CNT = #{requestCnt,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hy.dto.SysReqLogDto" >
+    update sys_req_log
+    set REQ_LOG_TYPE = #{reqLogType,jdbcType=CHAR},
+      STATUS = #{status,jdbcType=INTEGER},
+      SYS_APP_ID = #{sysAppId,jdbcType=VARCHAR},
+      BIZ_NO = #{bizNo,jdbcType=VARCHAR},
+      CHARSET = #{charset,jdbcType=VARCHAR},
+      REQUEST_TIME = #{requestTime,jdbcType=TIMESTAMP},
+      REQUEST_CONTENT = #{requestContent,jdbcType=VARCHAR},
+      RESPONSE_CONTENT = #{responseContent,jdbcType=VARCHAR},
+      REQUEST_CNT = #{requestCnt,jdbcType=INTEGER},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
