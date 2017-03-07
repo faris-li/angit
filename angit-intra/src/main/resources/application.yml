@@ -56,7 +56,12 @@ spring:
       min-idle: 0 #初始化连接数
 server:
   port: 8086
-
 mybatis:
   config-location: classpath:mybatis-config.xml
   mapper-locations: classpath:mybatis/*.xml
+#security:
+#  user:
+#    password: password
+#logging:
+#  level:
+#    org.springframework.security: DEBUG
