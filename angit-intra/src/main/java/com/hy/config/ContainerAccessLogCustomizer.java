@@ -8,7 +8,7 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 /**
  * access log config
  *
- * @author zhangxd
+ * @author 
  */
 public class ContainerAccessLogCustomizer implements EmbeddedServletContainerCustomizer {
 

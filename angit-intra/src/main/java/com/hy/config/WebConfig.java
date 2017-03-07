@@ -1,115 +1,86 @@
 package com.hy.config;
 
 import org.apache.catalina.filters.RemoteIpFilter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hy.interceptor.LogInterceptor;
 import com.hy.mapper.JsonMapper;
-
-import ch.qos.logback.access.servlet.TeeFilter;
 
 /**
  * WEB配置类
  *
- * @author zhangxd
+ * @author
  */
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    /**
-     * Remote ip filter remote ip filter.
-     *
-     * @return the remote ip filter
-     */
-    @Bean
-    public RemoteIpFilter remoteIpFilter() {
-        return new RemoteIpFilter();
+	@Bean
+	public RemoteIpFilter remoteIpFilter() {
+		return new RemoteIpFilter();
+	}
+	
+	@Bean
+    public LogInterceptor logInterceptor() {
+        return new LogInterceptor();
     }
 
-    /**
-     * Tee filter tee filter.
-     *
-     * @return the tee filter
-     */
-    @Bean
-    @ConditionalOnProperty(prefix = "server.tomcat.accesslog", name = "debug", havingValue = "true")
-    public TeeFilter teeFilter() {
-        //复制请求响应流，用于打印调试日志
-        return new TeeFilter();
-    }
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		// 配置日志拦截器拦截请求路径
+		registry.addInterceptor(logInterceptor())
+				.addPathPatterns("/**")
+				.excludePathPatterns("/")
+				.excludePathPatterns("/index");
+	}
 
-    /**
-     * Object mapper object mapper.
-     *
-     * @return the object mapper
-     */
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new JsonMapper();
-    }
+	@Bean
+	public ObjectMapper objectMapper() {
+		return new JsonMapper();
+	}
 
-    /**
-     * Http message converter http message converter.
-     *
-     * @return the http message converter
-     */
-    @Bean
-    public HttpMessageConverter httpMessageConverter() {
-        return new MappingJackson2HttpMessageConverter(this.objectMapper());
-    }
+	@Bean
+	public Validator validator() {
+		return new LocalValidatorFactoryBean();
+	}
 
-    @Override
-    public void configurePathMatch(PathMatchConfigurer configurer) {
-        configurer.setUseSuffixPatternMatch(false) // 系统对外暴露的 URL 不会识别和匹配 .* 后缀
-            .setUseTrailingSlashMatch(true); // 系统不区分 URL 的最后一个字符是否是斜杠 /
-    }
+	@Bean
+	public HttpMessageConverter<?> httpMessageConverter() {
+		return new MappingJackson2HttpMessageConverter(this.objectMapper());
+	}
 
-    @Override
-    public void configureDefaultServletHandling(final DefaultServletHandlerConfigurer configurer) {
-        // 等价于<mvc:default-servlet-handler />, 对静态资源文件的访问, 将无法 mapping 到 Controller 的 path 交给 default servlet handler 处理
-        configurer.enable();
-    }
+	@Override
+	public void configurePathMatch(PathMatchConfigurer configurer) {
+		configurer.setUseSuffixPatternMatch(false) // 系统对外暴露的 URL 不会识别和匹配 .* 后缀
+				.setUseTrailingSlashMatch(true); // 系统不区分 URL 的最后一个字符是否是斜杠 /
+	}
 
-    /**
-     * Validator local validator factory bean.
-     *
-     * @return the local validator factory bean
-     */
-    @Bean
-    public LocalValidatorFactoryBean validator() {
-        return new LocalValidatorFactoryBean();
-    }
+	@Override
+	public void configureDefaultServletHandling(final DefaultServletHandlerConfigurer configurer) {
+		// 等价于<mvc:default-servlet-handler />, 对静态资源文件的访问, 将无法 mapping 到
+		// Controller 的 path 交给 default servlet handler 处理
+		configurer.enable();
+	}
 
-    /**
-     * Gets method validation post processor.
-     *
-     * @return the method validation post processor
-     */
-    @Bean
-    public MethodValidationPostProcessor getMethodValidationPostProcessor() {
-        MethodValidationPostProcessor processor = new MethodValidationPostProcessor();
-        processor.setValidator(validator());
-        return processor;
-    }
+	@Override
+	public void configureViewResolvers(ViewResolverRegistry registry) {
+		registry.freeMarker();
+	}
 
-    /**
-     * Container customizer embedded servlet container customizer.
-     *
-     * @return the embedded servlet container customizer
-     */
-    @Bean
-    @ConditionalOnProperty(prefix = "server.tomcat.accesslog", name = "debug", havingValue = "true")
-    public EmbeddedServletContainerCustomizer containerCustomizer() {
-        return new ContainerAccessLogCustomizer("logback-access.xml");
-    }
+	@Override
+	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+		// 开放静态资源
+		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/").setCachePeriod(31536000);
+	}
 }

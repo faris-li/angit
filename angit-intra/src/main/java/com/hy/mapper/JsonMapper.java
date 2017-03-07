@@ -15,11 +15,16 @@ import java.io.IOException;
 /**
  * 自定义 Spring MVC 序列化方式
  *
- * @author zhangxd
+ * @author 
  */
 public class JsonMapper extends ObjectMapper {
 
-    public JsonMapper() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1936609701654953339L;
+
+	public JsonMapper() {
         this(Include.ALWAYS);
     }
 
