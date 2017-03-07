@@ -21,6 +21,7 @@ public interface ExtAppOrdersDtoMapper {
      * @return
      */
     List<AppOrdersModel> searchOrderPage(AppOrdersModel model);
+    
     int countByExample(AppOrdersModel model);
 }
 
