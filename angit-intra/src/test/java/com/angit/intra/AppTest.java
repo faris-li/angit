@@ -30,7 +30,7 @@ public class AppTest {
 		model.setMd5Key("rWOR93234JOEPR9234J2304");
 		model.setStatus("0");
 		try {
-			appRegisterService.registerApp(model);
+			System.out.println(appRegisterService.registerApp(model).getId());
 //			Page<AppProtocolDto> page = appRegisterService.serchAPPInfoByPage(model);
 //			System.out.println(page);
 		} catch (Exception e) {

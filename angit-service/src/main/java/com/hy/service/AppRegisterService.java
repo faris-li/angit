@@ -11,7 +11,7 @@ public interface AppRegisterService {
 	 * @param model
 	 * @return
 	 */
-	public int registerApp(AppProtocolModel model) throws Exception;
+	public AppProtocolDto registerApp(AppProtocolModel model) throws Exception;
 	/**
 	 * 分页查询
 	 * @return
@@ -35,7 +35,7 @@ public interface AppRegisterService {
 	 * @param model
 	 * @return
 	 */
-	public int updateAppInfo(AppProtocolModel model)throws Exception;
+	public AppProtocolDto updateAppInfo(AppProtocolModel model)throws Exception;
 		
 	
 	

@@ -22,7 +22,7 @@ public class AppRegisterServiceImpl extends BaseService implements AppRegisterSe
 	
 	@Transactional(readOnly = false)
 	@Override
-	public int registerApp(AppProtocolModel model) throws Exception {
+	public AppProtocolDto registerApp(AppProtocolModel model) throws Exception {
 		AppProtocolDto record = new AppProtocolDto();
 		record.setAppName(model.getAppName());
 		record.setAppCode(createAppCode());
@@ -31,7 +31,8 @@ public class AppRegisterServiceImpl extends BaseService implements AppRegisterSe
 		record.setCreateTime(new Date());
 		record.setUpdateTime(new Date());
 		record.setStatus(Integer.valueOf(model.getStatus()));
-		return appProtocolDtoMapper.insert(record);
+		appProtocolDtoMapper.insert(record);
+		return record;
 
 	}
 
@@ -58,14 +59,17 @@ public class AppRegisterServiceImpl extends BaseService implements AppRegisterSe
 	}
 
 	@Override
-	public int updateAppInfo(AppProtocolModel model) {
+	public AppProtocolDto updateAppInfo(AppProtocolModel model) {
 		AppProtocolDtoExample example = new AppProtocolDtoExample();
 		AppProtocolDto record = new AppProtocolDto();
 		record.setAppName(model.getAppName());
 		record.setAppCode(createAppCode());
 		record.setIpAddress(model.getIpAddress());
 		record.setMd5Key(model.getMd5Key());
-		return appProtocolDtoMapper.updateByExample(record, example);
+		record.setId(Integer.valueOf(model.getId()));
+		record.setUpdateTime(new Date());
+		appProtocolDtoMapper.updateByExample(record, example);
+		return record;
 	}
 
 }

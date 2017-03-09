@@ -7,16 +7,42 @@ define(function (require) {
     
 
 	app.controller('ProtocolController', function($scope, $stateParams, $state,$http) {
+		$scope.params = {
+            pageNum: 1,
+            pageSize: 20,
+            orderBy: ''
+        };
+		
 		layui.define([ 'layer', 'laypage' ], function(exports) {
-			var layer = layui.layer;
-			layui.laypage({
-			    cont: 'protocolPage'
-			    ,pages: 100 //总页数
-			    ,groups: 5 //连续显示分页数
-			});
+			$scope.search = function(){
+				console.log($scope.params);
+				$http.get("/protocol/listData",$scope.params)
+				.success(function(json){
+					console.log(json);
+					layui.laypage({
+					    cont: 'protocolPage'
+					    ,pages: 100 //总页数
+					    ,groups: 5 //连续显示分页数
+					});
+				});
+			
+			}
+			
+			$scope.search();
+			
 		});
+		
+		
+		
 	});
 	app.controller('ProtocolFormController', function($scope, $stateParams, $state,$http) {
+		var id = $state.params.id;
+		console.log($state);
+		if (!!id) { //编辑
+			$scope.title = '编辑渠道';
+		}else{
+			$scope.title = '新增渠道';
+		}
 		layui.use(['form'], function(){
 			var form = layui.form();
 			//监听提交
@@ -26,7 +52,11 @@ define(function (require) {
 					.success(function(json){
 						console.log(json);
 						layer.msg("提交成功！");
-						$state.go('app.protocol.list');
+						//$state.go('app.protocol.list');
+						$state.go('app.protocol.form', {
+	                        id: json.id
+	                    });
+	                    
 					}).error(function(){
 						
 					});
@@ -61,7 +91,7 @@ define(function (require) {
 			controller : 'ProtocolController'
 		})
 		.state('app.protocol.form', {
-			url : '/form',
+			url : '/form/{id}',
 			templateUrl : 'views/protocol-form.html',
 			controller : 'ProtocolFormController'
 		});
