@@ -1,0 +1,51 @@
+<div class="layui-tab layui-tab-brief">
+  <ul class="layui-tab-title">
+    <li class="layui-this"><a ui-sref="app.protocol.list">渠道管理</a></li>
+    <li><a ui-sref="app.protocol.form">新增渠道</a></li>
+  </ul>
+</div> 
+<form class="layui-form layui-form-pane" action="" style="margin-top: 20px;">
+	<div class="layui-form-item">
+		<label class="layui-form-label">渠道名称</label>
+		<div class="layui-input-inline">
+			<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+		</div>
+		<div class="layui-input-inline">
+			<button class="layui-btn">搜索</button>
+		</div>
+	</div>
+</form>
+<div class="layui-form">
+	<table class="layui-table">
+		<colgroup>
+			<col width="150">
+			<col width="150">
+			<col>
+			<col width="100">
+			<col width="100">
+			<col width="100">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>创建时间</th>
+				<th>渠道号码</th>
+				<th>渠道名称</th>
+				<th>公钥</th>
+				<th>状态</th>
+				<th><i class="layui-icon">&#xe649;</i></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>1989-10-14</td>
+				<td>1000500000</td>
+				<td>人生似修行</td>
+				<td>********</td>
+				<td>有效</td>
+				<td>编辑</td>
+			</tr>
+			
+		</tbody>
+	</table>
+</div>
+<div id="protocolPage"></div>

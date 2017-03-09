@@ -72,7 +72,7 @@
 
         </plugin>
 
-        <plugin interceptor="com.hy.datasource.DynamicPlugin"></plugin>
+        <!-- <plugin interceptor="com.hy.datasource.DynamicPlugin"></plugin> -->
     </plugins>
 
 </configuration>

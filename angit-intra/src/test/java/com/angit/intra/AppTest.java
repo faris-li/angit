@@ -25,9 +25,14 @@ public class AppTest {
 	public void testFindList() {
 		System.out.println("appRegisterService:" + appRegisterService);
 		AppProtocolModel model = new AppProtocolModel();
+		model.setAppName("合作渠道名称");
+		model.setIpAddress("200.200.200.200");
+		model.setMd5Key("rWOR93234JOEPR9234J2304");
+		model.setStatus("0");
 		try {
-			Page<AppProtocolDto> page = appRegisterService.serchAPPInfoByPage(model);
-			System.out.println(page);
+			appRegisterService.registerApp(model);
+//			Page<AppProtocolDto> page = appRegisterService.serchAPPInfoByPage(model);
+//			System.out.println(page);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

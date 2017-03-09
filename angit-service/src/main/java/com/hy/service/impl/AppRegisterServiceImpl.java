@@ -3,6 +3,7 @@ package com.hy.service.impl;
 import java.util.Date;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -16,13 +17,20 @@ import com.hy.service.AppRegisterService;
 @Service
 public class AppRegisterServiceImpl extends BaseService implements AppRegisterService {
 	private String createAppCode() {
-		return DateHelper.formatDate(new Date(), "yyOyyMMdd") + appProtocolDtoMapper.countByExample(null);
+		return DateHelper.formatDate(new Date(), "yyyyMMdd") + appProtocolDtoMapper.countByExample(null);
 	}
-
+	
+	@Transactional(readOnly = false)
 	@Override
 	public int registerApp(AppProtocolModel model) throws Exception {
-		AppProtocolDto record = dozerBean().map(model, AppProtocolDto.class);
+		AppProtocolDto record = new AppProtocolDto();
+		record.setAppName(model.getAppName());
 		record.setAppCode(createAppCode());
+		record.setIpAddress(model.getIpAddress());
+		record.setMd5Key(model.getMd5Key());
+		record.setCreateTime(new Date());
+		record.setUpdateTime(new Date());
+		record.setStatus(Integer.valueOf(model.getStatus()));
 		return appProtocolDtoMapper.insert(record);
 
 	}
@@ -40,7 +48,7 @@ public class AppRegisterServiceImpl extends BaseService implements AppRegisterSe
 	@Override
 	public AppProtocolModel getAPPInfoById(String id) throws Exception {
 		AppProtocolDto dto = appProtocolDtoMapper.selectByPrimaryKey(Integer.parseInt(id));
-		AppProtocolModel model = dozerBean().map(dto, AppProtocolModel.class);
+		AppProtocolModel model = new AppProtocolModel();
 		return model;
 	}
 
@@ -52,7 +60,11 @@ public class AppRegisterServiceImpl extends BaseService implements AppRegisterSe
 	@Override
 	public int updateAppInfo(AppProtocolModel model) {
 		AppProtocolDtoExample example = new AppProtocolDtoExample();
-		AppProtocolDto record = dozerBean().map(model, AppProtocolDto.class);
+		AppProtocolDto record = new AppProtocolDto();
+		record.setAppName(model.getAppName());
+		record.setAppCode(createAppCode());
+		record.setIpAddress(model.getIpAddress());
+		record.setMd5Key(model.getMd5Key());
 		return appProtocolDtoMapper.updateByExample(record, example);
 	}
 

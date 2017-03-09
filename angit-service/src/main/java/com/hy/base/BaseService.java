@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hy.mapper.AppOrdersDtoMapper;
@@ -36,12 +37,12 @@ public abstract class BaseService {
 		decimal = decimal.setScale(3, BigDecimal.ROUND_HALF_DOWN);
 		return decimal;
 	}
-
-	public DozerBeanMapper dozerBean() {
-		List<String> mappingFiles = Arrays.asList("dozerBeanMapping_service.xml");
-
-		DozerBeanMapper dozerBean = new DozerBeanMapper();
-		dozerBean.setMappingFiles(mappingFiles);
-		return dozerBean;
-	}
+	
+//	public DozerBeanMapper dozerBean() {
+//		List<String> mappingFiles = Arrays.asList("dozerBeanMapping_service.xml");
+//
+//		DozerBeanMapper dozerBean = new DozerBeanMapper();
+//		dozerBean.setMappingFiles(mappingFiles);
+//		return dozerBean;
+//	}
 }

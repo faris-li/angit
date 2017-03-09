@@ -1,0 +1,41 @@
+<div class="layui-tab layui-tab-brief">
+  <ul class="layui-tab-title">
+    <li><a ui-sref="app.protocol.list">渠道管理</a></li>
+    <li class="layui-this"><a ui-sref="app.protocol.form">新增渠道</a></li>
+  </ul>
+</div>
+<form class="layui-form layui-form-pane" style="margin-top: 20px;" method="post">
+  
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">渠道名称：</label>
+      <div class="layui-input-inline">
+        <input type="tel" name="appname" lay-verify="required" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+  </div>
+  
+ <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">渠道&nbsp;&nbsp;&nbsp;&nbsp;IP：</label>
+      <div class="layui-input-inline">
+        <input type="tel" name="ipaddress" lay-verify="required" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+  </div>
+  
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">渠道公钥：</label>
+      <div class="layui-input-inline">
+        <input type="tel" name="md5key" lay-verify="required" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" lay-submit lay-filter="formProtocol">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>

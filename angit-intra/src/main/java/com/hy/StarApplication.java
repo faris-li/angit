@@ -17,9 +17,11 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.hy.base.ServletContextHolder;
 
+@RestController
 @Configuration
 @EnableAutoConfiguration
 @SpringBootApplication
