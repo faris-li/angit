@@ -30,17 +30,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.formLogin()
 			.permitAll()
 			.successHandler(loginSuccessHandler())
-//			.and().logout().logoutSuccessUrl("/home")
-//			.permitAll().invalidateHttpSession(true).and().rememberMe()
-//			.tokenValiditySeconds(1209600);
-			.and().csrf().disable();
+			.and()
+			.logout()
+			.permitAll()
+			.and()
+			.csrf()
+			.disable();
 			
 		super.configure(http);
 	}
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("admin").password("111111").roles("USER","ADMIN");
+		auth.inMemoryAuthentication().withUser("admin").password("111111").roles("USER","ADMIN")
+		.and().withUser("root").password("1").roles("USER");
 	}
 
 	@Bean
