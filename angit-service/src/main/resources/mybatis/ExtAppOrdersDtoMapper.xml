@@ -19,7 +19,7 @@
  	<sql id="Base_Column_List" >
     o.ID, o.APP_ID, o.APP_MERCHANT_NO,
 		o.APP_MERCHANT_NAME, o.APP_ORDER_NO,
-		o.AMOUNT, o.STATUS,a.APP_NAME,
+		o.AMOUNT, o.STATUS,
 		o.NOTIFY_URL, o.CODE_URL, o.EXTENSION, o.CREATE_TIME,o.UPATE_TIME,
 		a.APP_NAME
   	</sql>
@@ -28,28 +28,33 @@
 		hy_res.t_app_orders o left join hy_res.t_app_protocol a
 		on o.APP_ID=a.ID
 		where 1=1 
-		 <if test="appMerchantNo != null" >
-    		 and  o.APP_MERCHANT_NO= #{appMerchantNo,jdbcType=VARCHAR},
+		 <if test="appMerchantNo != null and appMerchantNo!=''" >
+    		 and  o.APP_MERCHANT_NO= #{appMerchantNo,jdbcType=VARCHAR}
     	 </if>
-		 <if test="appMerchantName != null" >
-    		and o.APP_MERCHANT_NAME= #{appMerchantName,jdbcType=VARCHAR},
+		 <if test="appMerchantName != null and appMerchantName!=''" >
+    		and o.APP_MERCHANT_NAME like concat('%', #{appMerchantName,jdbcType=VARCHAR}, '%')
     	 </if>
-    	  <if test="appOrderNo != null" >
-    		and o.APP_ORDER_NO= #{appOrderNo,jdbcType=VARCHAR},
+    	  <if test="appOrderNo != null  and appOrderNo!=''" >
+    		and o.APP_ORDER_NO= #{appOrderNo,jdbcType=VARCHAR}
     	 </if>
-    	  <if test="appName != null" >
-    		and a.APP_NAME= #{appName,jdbcType=VARCHAR},
+    	 <if test="status != null and status!=''" >
+    		and o.status= #{status}
     	 </if>
-    	  <if test="startTime != null" >
-    		<![CDATA[and o.CREATE_TIME >  #{startTime,jdbcType=VARCHAR},]]>  
+    	 <if test="id != null and id!=''" >
+    		and o.id= #{id}
     	 </if>
-    	 <if test="endTime != null" >
-    		<![CDATA[  and o.CREATE_TIME <  #{endTime,jdbcType=VARCHAR}, ]]>  
+    	  <if test="appName != null and appName!=''" >
+    		and a.APP_NAME like concat('%', #{appName,jdbcType=VARCHAR}, '%')
+    	 </if>
+    	  <if test="startTime != null and startTime!=''" >
+    		<![CDATA[and o.CREATE_TIME >  #{startTime,jdbcType=VARCHAR}]]>  
+    	 </if>
+    	 <if test="endTime != null and endTime!=''" >
+    		<![CDATA[  and o.CREATE_TIME <  #{endTime,jdbcType=VARCHAR} ]]>  
     	 </if>
     	
   	</sql>
-	<select id="selectByExample" parameterType="com.hy.model.AppOrdersModel"
-		resultMap="BaseResultMap">
+	<select id="searchOrderPage" resultMap="BaseResultMap" parameterType="com.hy.model.AppOrdersModel" >
 		SELECT
 		<include refid="Base_Column_List" />
 		FROM
@@ -57,7 +62,7 @@
 		order by o.CREATE_TIME desc
 	</select>
 
-	<select id="countByExample" parameterType="com.hy.model.AppOrdersModel"
+	<select id="countByExample" parameterType="com.hy.model.AppOrdersModel" 
 		resultType="java.lang.Integer">
 		SELECT count(1) FROM
 		<include refid="base_where" />

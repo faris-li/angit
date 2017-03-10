@@ -4,38 +4,60 @@
     <li class="layui-this"><a ui-sref="app.protocol.form" ng-bind="title">新增渠道</a></li>
   </ul>
 </div>
-<form class="layui-form layui-form-pane" style="margin-top: 20px;" method="post">
-  
+<form class="layui-form" style="margin-top: 20px;" name="form">
+  <div ng-if="enabled">
+   <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label" style="width:110px;">渠道号码：</label>
+      <div class="layui-input-inline c280">
+         <input type="tel" ng-model="protocol.appCode" autocomplete="off" class="layui-input" disabled="disabled">
+      </div>
+    </div>
+  </div>
+  </div>
   <div class="layui-form-item">
     <div class="layui-inline">
-      <label class="layui-form-label">渠道名称：</label>
-      <div class="layui-input-inline">
-        <input type="tel" name="appname" lay-verify="required" autocomplete="off" class="layui-input">
+      <label class="layui-form-label" style="width:110px;">渠道名称：</label>
+      <div class="layui-input-inline c280">
+        <input type="tel"  ng-model="protocol.appName" autocomplete="off" class="layui-input" ng-maxlength="100" required>
       </div>
     </div>
   </div>
   
  <div class="layui-form-item">
     <div class="layui-inline">
-      <label class="layui-form-label">渠道&nbsp;&nbsp;&nbsp;&nbsp;IP：</label>
-      <div class="layui-input-inline">
-        <input type="tel" name="ipaddress" lay-verify="required" autocomplete="off" class="layui-input">
+      <label class="layui-form-label" style="width:110px;">渠道&nbsp;&nbsp;&nbsp;&nbsp;IP：</label>
+      <div class="layui-input-inline c560">
+        <textarea class="layui-textarea" name="content"  required ng-model="protocol.ipAddress"></textarea>
       </div>
     </div>
   </div>
   
   <div class="layui-form-item">
     <div class="layui-inline">
-      <label class="layui-form-label">渠道公钥：</label>
-      <div class="layui-input-inline">
-        <input type="tel" name="md5key" lay-verify="required" autocomplete="off" class="layui-input">
+      <label class="layui-form-label" style="width:110px;">渠道公钥：</label>
+      <div class="layui-input-inline c280">
+        <input type="tel" ng-model="protocol.md5Key" autocomplete="off" class="layui-input" ng-maxlength="100" required>
       </div>
     </div>
   </div>
+  <div ng-if="enabled">
+	  <div class="layui-form-item">
+	    <label class="layui-form-label" style="width:110px;">渠道状态：</label>
+	    <div class="layui-input-inline c280">
+	      <select id="status">
+	        <option value="0">初始</option>
+	        <option value="1">可用</option>
+	        <option value="9">不可用</option>
+	      </select>
+	    </div>
+	  </div>
+  </div>
   <div class="layui-form-item">
     <div class="layui-input-block">
-      <button class="layui-btn" lay-submit lay-filter="formProtocol">立即提交</button>
-      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+      <button class="layui-btn" ng-click="updateData()" ng-disabled="form.$invalid"  ng-if="enabled==true">立即修改</button>
+      <button class="layui-btn" ng-click="saveData()" ng-disabled="form.$invalid"  ng-if="enabled==false">立即保存</button>
+      <button class="layui-btn layui-btn-primary" ui-sref="app.protocol.list">取消</button>
     </div>
   </div>
 </form>

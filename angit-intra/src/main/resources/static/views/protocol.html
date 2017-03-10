@@ -8,7 +8,7 @@
 	<div class="layui-form-item">
 		<label class="layui-form-label">渠道名称</label>
 		<div class="layui-input-inline">
-			<input type="text" ng-model="params.appname" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+			<input type="text" ng-model="params.appName" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
 		</div>
 		<div class="layui-input-inline">
 			<button type="submit" class="layui-btn" ng-click='search()'>搜索</button>
@@ -18,11 +18,11 @@
 <div class="layui-form">
 	<table class="layui-table">
 		<colgroup>
-			<col width="150">
-			<col width="150">
+			<col width="200">
+			<col width="200">
 			<col>
 			<col width="100">
-			<col width="100">
+			<col width="180">
 			<col width="100">
 		</colgroup>
 		<thead>
@@ -36,13 +36,13 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td>1989-10-14</td>
-				<td>1000500000</td>
-				<td>人生似修行</td>
-				<td>********</td>
-				<td>有效</td>
-				<td>编辑</td>
+			<tr ng-repeat="item in pageInfo.list">
+				<td>{{item.createTime | date : 'yyyy-MM-dd HH:mm:ss'}}</td>
+				<td>{{item.appCode}}</td>
+				<td>{{item.appName}}</td>
+				<td>******</td>
+				<td>{{item.status| dict: 'PROTOCOL_STATUS'}}</td>
+				<td><a ui-sref="app.protocol.form({id: item.id})"  style='color:blue;'>编辑</a></td>
 			</tr>
 			
 		</tbody>

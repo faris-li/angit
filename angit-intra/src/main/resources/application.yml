@@ -1,9 +1,9 @@
 spring:
   # DataSource Config
   datasource:
-    url: jdbc:mysql://139.196.50.94:3306/hy_res?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
-    username: hy_res
-    password: hy_res
+    url: jdbc:mysql://127.0.0.1:3306/hy_res?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
+    username: root
+    password: root
     driver-class-name: com.mysql.jdbc.Driver
     max-active: 20
     initial-size: 1

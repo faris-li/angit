@@ -1,12 +1,13 @@
 package com.hy.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hy.base.BaseService;
 import com.hy.common.utils.DateHelper;
 import com.hy.dto.AppProtocolDto;
@@ -37,30 +38,33 @@ public class AppRegisterServiceImpl extends BaseService implements AppRegisterSe
 	}
 
 	@Override
-	public Page<AppProtocolDto> serchAPPInfoByPage(AppProtocolModel model) throws Exception {
-
-		Page<AppProtocolDto> page =  PageHelper.startPage(model.getPageNum(), model.getPageSize(), true, true);
+	public PageInfo<AppProtocolDto> serchAPPInfoByPage(AppProtocolModel model) throws Exception {
+		PageHelper.startPage(model.getPageNum(), model.getPageSize(), true, true);
 		PageHelper.orderBy(" create_time desc ");
 		AppProtocolDtoExample example = new AppProtocolDtoExample();
-		appProtocolDtoMapper.selectByExample(example);
-		return page;
+		if(model.getAppName()!=null&&model.getAppName().length()>0){
+			example.or().andAppNameLike("%"+model.getAppName()+"%");
+		}
+		List<AppProtocolDto> list = appProtocolDtoMapper.selectByExample(example);
+		return new PageInfo<>(list);
 	}
 
 	@Override
-	public AppProtocolModel getAPPInfoById(String id) throws Exception {
-		AppProtocolDto dto = appProtocolDtoMapper.selectByPrimaryKey(Integer.parseInt(id));
-		AppProtocolModel model = new AppProtocolModel();
-		return model;
+	public AppProtocolDto getAPPInfoById(String id) throws Exception {
+		return appProtocolDtoMapper.selectByPrimaryKey(Integer.parseInt(id));
 	}
 
+	@Transactional(readOnly = false)
 	@Override
 	public int deleteAppInfo(String id) throws Exception {
 		return appProtocolDtoMapper.deleteByPrimaryKey(Integer.valueOf(id));
 	}
 
+	@Transactional(readOnly = false)
 	@Override
 	public AppProtocolDto updateAppInfo(AppProtocolModel model) {
 		AppProtocolDtoExample example = new AppProtocolDtoExample();
+		example.or().andIdEqualTo(Integer.valueOf(model.getId()));
 		AppProtocolDto record = new AppProtocolDto();
 		record.setAppName(model.getAppName());
 		record.setAppCode(createAppCode());
@@ -68,6 +72,7 @@ public class AppRegisterServiceImpl extends BaseService implements AppRegisterSe
 		record.setMd5Key(model.getMd5Key());
 		record.setId(Integer.valueOf(model.getId()));
 		record.setUpdateTime(new Date());
+		record.setStatus(Integer.valueOf(model.getStatus()));
 		appProtocolDtoMapper.updateByExample(record, example);
 		return record;
 	}

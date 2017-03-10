@@ -1,2 +1,84 @@
-<div class="page-header">交易管理</div>
-
+<div class="layui-tab layui-tab-brief">
+  <ul class="layui-tab-title">
+    <li class="layui-this"><a ui-sref="app.order">交易管理</a></li>
+  </ul>
+</div> 
+<form class="layui-form layui-form-pane"  style="margin-top: 20px;">
+	<div class="layui-form-item">
+		<label class="layui-form-label">商户号</label>
+		<div class="layui-input-inline">
+			<input type="text" ng-model="params.appMerchantNo"  placeholder="请输入" autocomplete="off" class="layui-input">
+		</div>
+		<label class="layui-form-label">商户名称</label>
+		<div class="layui-input-inline">
+			<input type="text" ng-model="params.appMerchantName"  placeholder="请输入" autocomplete="off" class="layui-input">
+		</div>
+		<label class="layui-form-label">商户订单号</label>
+		<div class="layui-input-inline">
+			<input type="text" ng-model="params.appOrderNo"  placeholder="请输入" autocomplete="off" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">渠道名称</label>
+		<div class="layui-input-inline">
+			<input type="text" ng-model="params.appName"  placeholder="请输入" autocomplete="off" class="layui-input">
+		</div>
+		<label class="layui-form-label">状态</label>
+		<div class="layui-input-inline">
+			<input type="text" ng-model="params.status"  placeholder="请输入" autocomplete="off" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">日期</label>
+		<div class="layui-input-inline">
+			<input type="text"  placeholder="开始日" id="LAY_demorange_s" class="layui-input">
+		</div>
+		<div class="layui-input-inline">
+			<input type="text"  placeholder="截止日" id="LAY_demorange_e" class="layui-input">
+		</div>
+		<div class="layui-input-inline">
+			<button type="submit" class="layui-btn" ng-click='search()'>搜索</button>
+		</div>
+	</div>
+</form>
+<div class="layui-form">
+	<table class="layui-table">
+		<colgroup>
+			<col width="200">
+			<col width="150">
+			<col width="150">
+			<col>
+			<col width="100">
+			<col width="100">
+			<col width="200">
+			<col>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>创建时间</th>
+				<th>商户号</th>
+				<th>商户名称</th>
+				<th>商户订单号</th>
+				<th>订单金额</th>
+				<th>状态</th>
+				<th>渠道名称</th>
+				<th><i class="layui-icon">&#xe649;</i></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in pageInfo.list">
+				<td>{{item.createTime | date : 'yyyy-MM-dd HH:mm:ss'}}</td>
+				<td>{{item.appMerchantNo}}</td>
+				<td>{{item.appMerchantName}}</td>
+				<td>******</td>
+				<td>{{item.amount}}</td>
+				<td>{{item.status| dict: 'ORDER_STATUS'}}</td>
+				<th>{{item.appName}}</th>
+				<td ng-if="item.status==0"><a href="javascript:;"  style='color:blue;' ng-click='repairOrder(item.id)'>{{item.status| dict: 'ORDER_C_STATUS'}}</a></td>
+				<td ng-if="item.status==1||item.status==2">{{item.status| dict: 'ORDER_C_STATUS'}}</a></td>
+			</tr>
+			
+		</tbody>
+	</table>
+</div>
+<div id="divPage"></div>

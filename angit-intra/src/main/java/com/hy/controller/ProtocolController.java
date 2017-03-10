@@ -1,5 +1,7 @@
 package com.hy.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.hy.dto.AppProtocolDto;
 import com.hy.model.AppProtocolModel;
 import com.hy.service.AppRegisterService;
@@ -25,36 +26,23 @@ public class ProtocolController {
 	private AppRegisterService appRegisterService;
 
 	@PostMapping(value = "saveData")
-	public AppProtocolDto saveData(@RequestBody JSONObject requestJson) throws Exception {
-		AppProtocolModel protocol = new AppProtocolModel();
-		protocol.setAppName(requestJson.getString("appname"));
-		protocol.setIpAddress(requestJson.getString("ipaddress"));
-		protocol.setMd5Key(requestJson.getString("md5key"));
+	public AppProtocolDto saveData(@Valid @RequestBody AppProtocolModel protocol) throws Exception {
 		protocol.setStatus("0");
 		return appRegisterService.registerApp(protocol);
 	}
 	
 	@PostMapping(value = "updateData")
-	public AppProtocolDto updateData(@RequestBody JSONObject requestJson) throws Exception {
-		AppProtocolModel protocol = new AppProtocolModel();
-		protocol.setAppName(requestJson.getString("appname"));
-		protocol.setIpAddress(requestJson.getString("ipaddress"));
-		protocol.setMd5Key(requestJson.getString("md5key"));
-		protocol.setStatus(requestJson.getString("status"));
-		protocol.setId(requestJson.getString("id"));
+	public AppProtocolDto updateData(@Valid @RequestBody AppProtocolModel protocol) throws Exception {
 		return appRegisterService.updateAppInfo(protocol);
 	}
 	
 	@GetMapping(value = "listData")
-	public Page<AppProtocolDto> listData(@RequestBody JSONObject requestJson) throws Exception {
-		AppProtocolModel protocol = new AppProtocolModel();
-		protocol.setAppName(requestJson.getString("appname"));
-//		protocol.setPageSize();
-		return appRegisterService.serchAPPInfoByPage(protocol);
+	public PageInfo<AppProtocolDto> listData(AppProtocolModel model) throws Exception {
+		return appRegisterService.serchAPPInfoByPage(model);
 	}
 	
 	@GetMapping(value = "getData/{id}")
-	public AppProtocolModel getData(@PathVariable("id") String id) throws Exception {
+	public AppProtocolDto getData(@PathVariable("id") String id) throws Exception {
 		return appRegisterService.getAPPInfoById(id);
 	}
 	

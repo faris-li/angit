@@ -11,6 +11,7 @@ import com.github.pagehelper.Page;
 import com.hy.StarApplication;
 import com.hy.dto.AppProtocolDto;
 import com.hy.model.AppProtocolModel;
+import com.hy.service.AppOrderService;
 import com.hy.service.AppRegisterService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -20,6 +21,9 @@ public class AppTest {
 
 	@Autowired
 	private AppRegisterService appRegisterService;
+	
+	@Autowired
+	private AppOrderService appOrderService;
 
 	@Test
 	public void testFindList() {
@@ -30,9 +34,10 @@ public class AppTest {
 		model.setMd5Key("rWOR93234JOEPR9234J2304");
 		model.setStatus("0");
 		try {
-			System.out.println(appRegisterService.registerApp(model).getId());
+//			System.out.println(appRegisterService.registerApp(model).getId());
 //			Page<AppProtocolDto> page = appRegisterService.serchAPPInfoByPage(model);
 //			System.out.println(page);
+			appOrderService.synAppOrders("1", "2");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

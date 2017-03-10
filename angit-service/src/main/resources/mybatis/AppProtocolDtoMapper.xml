@@ -211,7 +211,7 @@
       MD5_KEY = #{record.md5Key,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=INTEGER},
       IP_ADDRESS = #{record.ipAddress,jdbcType=VARCHAR},
-      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
