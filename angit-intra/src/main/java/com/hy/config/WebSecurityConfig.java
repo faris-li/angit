@@ -7,10 +7,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -25,9 +27,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //				.permitAll().invalidateHttpSession(true).and().rememberMe()// 登录后记住用户，下次自动登录,数据库中必须存在名为persistent_logins的表
 //				.tokenValiditySeconds(1209600);
 		http.authorizeRequests()
-//			.antMatchers("/home").permitAll().anyRequest().authenticated()
+			.antMatchers("/webjars/**","/lib/**").permitAll().anyRequest().authenticated()
 			.and()
 			.formLogin()
+			.loginPage("/login")
 			.permitAll()
 			.successHandler(loginSuccessHandler())
 			.and()
@@ -40,11 +43,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		super.configure(http);
 	}
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("admin").password("111111").roles("USER","ADMIN")
-		.and().withUser("root").password("1").roles("USER");
-	}
+//	@Autowired
+//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//		auth.inMemoryAuthentication().withUser("admin").password("111111").roles("USER","ADMIN")
+//		.and().withUser("root").password("1").roles("USER");
+//	}
 
 	@Bean
 	public LoginSuccessHandler loginSuccessHandler() {

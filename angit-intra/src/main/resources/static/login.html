@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<meta charset="utf-8" />
+<head>
+<title>登录管理系统</title>
+<link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet"></link>
+<style type="text/css">
+.bs-login {
+    position: relative;
+    width: auto;
+    max-width: 400px;
+    margin: 20px auto;
+    margin-top: 10%;
+    padding: 20px;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    border: 1px solid rgba(0, 0, 0, .1);
+    background-color: #fff;
+    -webkit-box-shadow: 0 0 225px rgba(255, 255, 255, .55);
+    box-shadow: 0 0 225px rgba(255, 255, 255, .55);
+}
+
+.bs-signin {
+    width: auto;
+    max-width: 585px;
+    margin: 0 auto 10px;
+    padding: 0 10px;
+}
+
+.bs-signin h1 {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1;
+    margin: 0;
+    padding: 20px 0;
+}
+
+.bs-signin .holding {
+    margin-bottom: 5px;
+}
+
+
+</style>
+
+</head>
+<body>
+	<div class="bs-login">
+		<div class="bs-signin">
+			<h1>登录管理系统</h1>
+			<form th:action="@{/login}" method="post">
+				<fieldset>
+					<div class="clearfix holding">
+						<input class="form-control input-xlarge" type="text" name="username" placeholder="用户名" required="required"/>
+					</div>
+					<div class="clearfix holding">
+						<input class="form-control input-xlarge" type="password" name="password" placeholder="密码"  required="required"/>
+					</div>
+				</fieldset>
+				<div class="alert alert-error alert-danger" th:if="${param.error ne null or param.logout ne null}">
+				<span th:if="${param.error}">请输入正确的用户名和密码.</span>
+				<span th:if="${param.logout}">你已经退出登录.</span>
+				</div>
+				<div style="margin-top: 10px;">
+					<input type="submit" class="btn" value="Sign In" />
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
